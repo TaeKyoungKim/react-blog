@@ -14,21 +14,49 @@ class App extends Component {
         onLogin: this.onLogin,
         onLogout: this.onLogout
     }
-}
+  }
 
-// Login Func
-onLogin = () => {
+  // Login Func
+  onLogin = () => {
     this.setState({
         logged: true
     });
-}
+  }
 
-// Logout Func
-onLogout = () => {
+  // Logout Func
+  onLogout = () => {
     this.setState({
         logged: false
     });
-}
+
+    const provider = window.sessionStorage.getItem('provider');    
+    //Google AccessToken Remove
+    if(provider === 'google') {
+      const auth2 = window.gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function() {
+        console.log('Goolge Logout.');
+      });
+    }
+    // Kakao AccessToken Remove
+    else if(provider === 'kakao'){
+      window.Kakao.Auth.logout(function() {
+        console.log("Kakao logout");
+      });
+    }
+    //SessionStorage Clear
+    window.sessionStorage.clear();
+  }
+
+  componentDidMount() {
+    const id = window.sessionStorage.getItem('id');
+    if(id) {
+      this.onLogin();
+    }
+    else {
+      this.onLogout();
+    }
+  }
+
   render() {
     const { logged, onLogout } = this.state;
 
