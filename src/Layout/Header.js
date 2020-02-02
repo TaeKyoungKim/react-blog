@@ -28,7 +28,8 @@ const Container = styled.div`
     border-bottom: 1px solid #d1d8e4;
 `;
 
-const Element = styled.div`   margin: 0 auto;
+const Element = styled.div`   
+    margin: 0 auto;
     width: 1080px;
     height: 100px;
     display: flex;
