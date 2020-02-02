@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import styled from 'styled-components';
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
 
@@ -14,7 +15,23 @@ class Login extends Component {
     }
     // Google Login
     responseGoogle = (res) => {
-        console.log(res)
+        this.setState({
+            id: res.googleId,
+            name: res.profileObj.name,
+            provider: 'google'
+        });
+        this.props.onLogin();
+        this.props.history.push('/');
+    }
+    // Kakao Login
+    responseKakao = (res) => {
+        this.setState({
+            id: res.profile.id,
+            name: res.profile.properties.nickname,
+            provider: 'kakao'
+        });
+        this.props.onLogin();
+        this.props.history.push('/');
     }
 
     // Login Fail
@@ -31,15 +48,16 @@ class Login extends Component {
                     onSuccess={this.responseGoogle}
                     onFailure={this.responseFail}
                 />
+                
             </Container>
         );
     }
 }
+
 
 const Container = styled.div`
     display: flex;
     flex-flow: column wrap;
 `
 
-
-export default Login;
+export default withRouter(Login);
